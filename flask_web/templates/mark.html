@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>MARK</title>
+
+
+
+
+
+</head>
+
+<body>
+    <h1 class="text-center">产后出血症预测系统</h1>
+    <h4 class="text-center">Postpartum Hemorrhage Prediction System</h4>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="home.html">主页</a></li>
+                    <li><a href="predict.html">预测</a></li>
+                    <li class="active"><a href="mark.html">标注<span class="sr-only">(current)</span></a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="jumbotron">
+                    <h1>
+                        如何标注？
+                    </h1>
+                    <p>
+                        数据标注是指对特征数据重要程度的选择，有利于提高训练训练模型的效率和准确率，在下方的表格中拖动表示属性的重要程度从0-1，然后提交结果。
+                    </p>
+                    <p>Data annotation refers to the selection of the importance level of feature data, which is beneficial for improving the efficiency and accuracy of training models. Drag in the table below to indicate the importance level of attributes
+                        from 0 to 1, and then submit the results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- success error warning info -->
+    <form action="{{url_for('mark')}}" method="POST">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    特征编号
+                                </th>
+                                <th>
+                                    特征名
+                                </th>
+                                <th>
+                                    特征描述
+                                </th>
+                                <th>
+                                    标注
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="success">
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    孕周
+                                </td>
+                                <td>
+                                    孕产妇怀孕的周数
+                                </td>
+                                <td>
+                                    <div><input type="range" name="m1" id="pointsRange1" min="0" max="10" step="1" onchange="updateValue('pointsRange1', this.value)">
+                                        <span id="rangeValue1">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    2
+                                </td>
+                                <td>
+                                    年龄
+                                </td>
+                                <td>
+                                    孕产妇的年龄
+                                </td>
+                                <td>
+                                    <div> <input type="range" name="m2" id="pointsRange2" min="0" max="10" step="0.1" onchange="updateValue('pointsRange2', this.value)">
+                                        <span id="rangeValue2">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    3
+                                </td>
+                                <td>
+                                    孕次
+                                </td>
+                                <td>
+                                    孕产妇的怀孕次数
+                                </td>
+                                <td>
+                                    <div> <input type="range" name="m3" id="pointsRange3" min="0" max="10" step="0.1" onchange="updateValue('pointsRange3', this.value)">
+                                        <span id="rangeValue3">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    4
+                                </td>
+                                <td>
+                                    产次
+                                </td>
+                                <td>
+                                    孕产妇的分娩次数
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m4" id="pointsRange4" min="0" max="10" step="0.1" onchange="updateValue('pointsRange4', this.value)">
+                                        <span id="rangeValue4">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    5
+                                </td>
+                                <td>
+                                    身高
+                                </td>
+                                <td>
+                                    孕产妇的身高
+                                </td>
+                                <td>
+                                    <div><input type="range" name="m5" id="pointsRange5" min="0" max="10" step="0.1" onchange="updateValue('pointsRange5', this.value)">
+                                        <span id="rangeValue5">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    6
+                                </td>
+                                <td>
+                                    体重
+                                </td>
+                                <td>
+                                    孕产妇的体重
+                                </td>
+                                <td>
+                                    <div> <input type="range" name="m6" id="pointsRange6" min="0" max="10" step="0.1" onchange="updateValue('pointsRange6', this.value)">
+                                        <span id="rangeValue6">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    7
+                                </td>
+                                <td>
+                                    体重指数
+                                </td>
+                                <td>
+                                    衡量身体肥胖程度
+                                </td>
+                                <td>
+                                    <div> <input type="range" name="m7" id="pointsRange7" min="0" max="10" step="0.1" onchange="updateValue('pointsRange7', this.value)">
+                                        <span id="rangeValue7">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    8
+                                </td>
+                                <td>
+                                    学历
+                                </td>
+                                <td>
+                                    孕产妇的受教育程度
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m8" id="pointsRange8" min="0" max="10" step="0.1" onchange="updateValue('pointsRange8', this.value)">
+                                        <span id="rangeValue8">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    9
+                                </td>
+                                <td>
+                                    第一产程时间
+                                </td>
+                                <td>
+                                    从临产到宫口开全的时间
+                                </td>
+                                <td>
+                                    <div><input type="range" name="m9" id="pointsRange9" min="0" max="10" step="0.1" onchange="updateValue('pointsRange9', this.value)">
+                                        <span id="rangeValue9">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    10
+                                </td>
+                                <td>
+                                    第二产程时间
+                                </td>
+                                <td>从宫口开全到胎儿娩出的时间</td>
+                                <td>
+                                    <div> <input type="range" name="m10" id="pointsRange10" min="0" max="10" step="0.1" onchange="updateValue('pointsRange10', this.value)">
+                                        <span id="rangeValue10">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    11
+                                </td>
+                                <td>
+                                    第三产程时间
+                                </td>
+                                <td>从胎儿娩出到胎盘娩出的时间</td>
+                                <td>
+                                    <div> <input type="range" name="m11" id="pointsRange11" min="0" max="10" step="0.1" onchange="updateValue('pointsRange11', this.value)">
+                                        <span id="rangeValue11">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    12
+                                </td>
+                                <td>
+                                    总产程时间
+                                </td>
+                                <td>从临产到分娩结束的总时间</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m12" id="pointsRange12" min="0" max="10" step="0.1" onchange="updateValue('pointsRange12', this.value)">
+                                        <span id="rangeValue12">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    13
+                                </td>
+                                <td>
+                                    临产方式
+                                </td>
+                                <td>孕产妇开始分娩的方式（如自然临产、诱导分娩等）</td>
+                                <td>
+                                    <div><input type="range" name="m13" id="pointsRange13" min="0" max="10" step="0.1" onchange="updateValue('pointsRange13', this.value)">
+                                        <span id="rangeValue13">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    14
+                                </td>
+                                <td>
+                                    胎盘娩出方式
+                                </td>
+                                <td>胎盘娩出的方式</td>
+                                <td>
+                                    <div> <input type="range" name="m14" id="pointsRange14" min="0" max="10" step="0.1" onchange="updateValue('pointsRange14', this.value)">
+                                        <span id="rangeValue14">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    15
+                                </td>
+                                <td>
+                                    阴道检查次数
+                                </td>
+                                <td>分娩过程中阴道检查的次数</td>
+                                <td>
+                                    <div> <input type="range" name="m15" id="pointsRange15" min="0" max="10" step="0.1" onchange="updateValue('pointsRange15', this.value)">
+                                        <span id="rangeValue15">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    16
+                                </td>
+                                <td>
+                                    胎儿娩出方式
+                                </td>
+                                <td>胎儿娩出的方式（如顺产、剖宫产等）</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m16" id="pointsRange4" min="0" max="10" step="0.1" onchange="updateValue('pointsRange16', this.value)">
+                                        <span id="rangeValue16">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    17
+                                </td>
+                                <td>
+                                    胎膜破裂方式
+                                </td>
+                                <td>胎膜破裂的方式（如自然破裂、人工破裂等）</td>
+                                <td>
+                                    <div><input type="range" name="m17" id="pointsRange17" min="0" max="10" step="0.1" onchange="updateValue('pointsRange17', this.value)">
+                                        <span id="rangeValue17">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    18
+                                </td>
+                                <td>
+                                    前羊水量
+                                </td>
+                                <td>分娩前羊水的量</td>
+                                <td>
+                                    <div> <input type="range" name="m18" id="pointsRange18" min="0" max="10" step="0.1" onchange="updateValue('pointsRange18', this.value)">
+                                        <span id="rangeValue18">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    19
+                                </td>
+                                <td>
+                                    羊水量
+                                </td>
+                                <td>分娩时的羊水量</td>
+                                <td>
+                                    <div> <input type="range" name="m19" id="pointsRange19" min="0" max="10" step="0.1" onchange="updateValue('pointsRange19', this.value)">
+                                        <span id="rangeValue19">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    20
+                                </td>
+                                <td>
+                                    胎盘完整
+                                </td>
+                                <td>胎盘是否完整</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m20" id="pointsRange20" min="0" max="10" step="0.1" onchange="updateValue('pointsRange20', this.value)">
+                                        <span id="rangeValue20">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    21
+                                </td>
+                                <td>
+                                    胎盘附着情况
+                                </td>
+                                <td>胎盘在子宫内的附着情况</td>
+                                <td>
+                                    <div><input type="range" name="m21" id="pointsRange21" min="0" max="10" step="0.1" onchange="updateValue('pointsRange21', this.value)">
+                                        <span id="rangeValue21">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    22
+                                </td>
+                                <td>
+                                    胎盘宽
+                                </td>
+                                <td>胎盘的宽度</td>
+                                <td>
+                                    <div> <input type="range" name="m22" id="pointsRange22" min="0" max="10" step="0.1" onchange="updateValue('pointsRange22', this.value)">
+                                        <span id="rangeValue22">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    23
+                                </td>
+                                <td>
+                                    胎盘长
+                                </td>
+                                <td>胎盘的长度</td>
+                                <td>
+                                    <div> <input type="range" name="m23" id="pointsRange23" min="0" max="10" step="0.1" onchange="updateValue('pointsRange23', this.value)">
+                                        <span id="rangeValue23">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    24
+                                </td>
+                                <td>
+                                    胎盘厚
+                                </td>
+                                <td>胎盘的厚度</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m24" id="pointsRange24" min="0" max="10" step="0.1" onchange="updateValue('pointsRange24', this.value)">
+                                        <span id="rangeValue24">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    25
+                                </td>
+                                <td>
+                                    胎盘重量
+                                </td>
+                                <td>胎盘的重量</td>
+                                <td>
+                                    <div><input type="range" name="m25" id="pointsRange25" min="0" max="10" step="0.1" onchange="updateValue('pointsRange25', this.value)">
+                                        <span id="rangeValue25">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    26
+                                </td>
+                                <td>
+                                    胎膜完整
+                                </td>
+                                <td>胎膜是否完整</td>
+                                <td>
+                                    <div> <input type="range" name="m26" id="pointsRange26" min="0" max="10" step="0.1" onchange="updateValue('pointsRange26', this.value)">
+                                        <span id="rangeValue26">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    27
+                                </td>
+                                <td>
+                                    脐带长
+                                </td>
+                                <td>脐带的长度</td>
+                                <td>
+                                    <div> <input type="range" name="m27" id="pointsRange27" min="0" max="10" step="0.1" onchange="updateValue('pointsRange27', this.value)">
+                                        <span id="rangeValue27">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    28
+                                </td>
+                                <td>
+                                    脐带扭转
+                                </td>
+                                <td>脐带是否发生扭转</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m28" id="pointsRange28" min="0" max="10" step="0.1" onchange="updateValue('pointsRange28', this.value)">
+                                        <span id="rangeValue28">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    29
+                                </td>
+                                <td>
+                                    脐带情况
+                                </td>
+                                <td>脐带的状况（如绕颈、无绕颈等）</td>
+                                <td>
+                                    <div><input type="range" name="m29" id="pointsRange29" min="0" max="10" step="0.1" onchange="updateValue('pointsRange29', this.value)">
+                                        <span id="rangeValue1">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    30
+                                </td>
+                                <td>
+                                    会阴
+                                </td>
+                                <td>会阴的状况（如裂伤、完整等）</td>
+                                <td>
+                                    <div> <input type="range" name="m30" id="pointsRange30" min="0" max="10" step="0.1" onchange="updateValue('pointsRange30', this.value)">
+                                        <span id="rangeValue2">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    31
+                                </td>
+                                <td>
+                                    前羊水性质
+                                </td>
+                                <td>分娩前羊水的性质</td>
+                                <td>
+                                    <div> <input type="range" name="m31" id="pointsRange31" min="0" max="10" step="0.1" onchange="updateValue('pointsRange31', this.value)">
+                                        <span id="rangeValue31">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    32
+                                </td>
+                                <td>
+                                    阴道壁裂伤
+                                </td>
+                                <td>描述阴道壁在分娩过程中是否发生裂伤</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m32" id="pointsRange32" min="0" max="10" step="0.1" onchange="updateValue('pointsRange32', this.value)">
+                                        <span id="rangeValue32">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    33
+                                </td>
+                                <td>
+                                    宫颈情况
+                                </td>
+                                <td>描述宫颈的状态，是否有裂伤</td>
+                                <td>
+                                    <div><input type="range" name="m33" id="pointsRange33" min="0" max="10" step="0.1" onchange="updateValue('pointsRange33', this.value)">
+                                        <span id="rangeValue33">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    34
+                                </td>
+                                <td>
+                                    头围
+                                </td>
+                                <td>胎儿或新生儿的头围</td>
+                                <td>
+                                    <div> <input type="range" name="m34" id="pointsRange34" min="0" max="10" step="0.1" onchange="updateValue('pointsRange34', this.value)">
+                                        <span id="rangeValue34">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    35
+                                </td>
+                                <td>
+                                    身长
+                                </td>
+                                <td>胎儿或新生儿的身长</td>
+                                <td>
+                                    <div> <input type="range" name="m35" id="pointsRange35" min="0" max="10" step="0.1" onchange="updateValue('pointsRange35', this.value)">
+                                        <span id="rangeValue35">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    36
+                                </td>
+                                <td>
+                                    胸围
+                                </td>
+                                <td>胎儿或新生儿的胸围</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m36" id="pointsRange36" min="0" max="10" step="0.1" onchange="updateValue('pointsRange36', this.value)">
+                                        <span id="rangeValue36">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    37
+                                </td>
+                                <td>
+                                    出生时情况
+                                </td>
+                                <td>新生儿出生时的状况</td>
+                                <td>
+                                    <div><input type="range" name="m37" id="pointsRange37" min="0" max="10" step="0.1" onchange="updateValue('pointsRange37', this.value)">
+                                        <span id="rangeValue37">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    38
+                                </td>
+                                <td>
+                                    出生体重
+                                </td>
+                                <td>新生儿的体重</td>
+                                <td>
+                                    <div> <input type="range" name="m38" id="pointsRange38" min="0" max="10" step="0.1" onchange="updateValue('pointsRange38', this.value)">
+                                        <span id="rangeValue38">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    39
+                                </td>
+                                <td>
+                                    新生儿性别
+                                </td>
+                                <td>新生儿的性别</td>
+                                <td>
+                                    <div> <input type="range" name="m39" id="pointsRange39" min="0" max="10" step="0.1" onchange="updateValue('pointsRange39', this.value)">
+                                        <span id="rangeValue39">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    40
+                                </td>
+                                <td>
+                                    呼吸
+                                </td>
+                                <td>新生儿的呼吸状况，如自然或人工</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m40" id="pointsRange40" min="0" max="10" step="0.1" onchange="updateValue('pointsRange40', this.value)">
+                                        <span id="rangeValue40">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    41
+                                </td>
+                                <td>
+                                    宫颈外缝针数
+                                </td>
+                                <td>宫颈外缝合时的针数</td>
+                                <td>
+                                    <div><input type="range" name="m41" id="pointsRange41" min="0" max="10" step="0.1" onchange="updateValue('pointsRange41', this.value)">
+                                        <span id="rangeValue41">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    42
+                                </td>
+                                <td>
+                                    欣母沛
+                                </td>
+                                <td>是否使用欣母沛药物</td>
+                                <td>
+                                    <div> <input type="range" name="m422" id="pointsRange42" min="0" max="10" step="0.1" onchange="updateValue('pointsRange42', this.value)">
+                                        <span id="rangeValue42">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    43
+                                </td>
+                                <td>
+                                    缩宫素
+                                </td>
+                                <td>是否使用缩宫素</td>
+                                <td>
+                                    <div> <input type="range" name="m43" id="pointsRange43" min="0" max="10" step="0.1" onchange="updateValue('pointsRange43', this.value)">
+                                        <span id="rangeValue43">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    44
+                                </td>
+                                <td>
+                                    益母草
+                                </td>
+                                <td>是否使用益母草</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m44" id="pointsRange44" min="0" max="10" step="0.1" onchange="updateValue('pointsRange44', this.value)">
+                                        <span id="rangeValue44">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="success">
+                                <td>
+                                    45
+                                </td>
+                                <td>
+                                    宫颈内埋缝合
+                                </td>
+                                <td>是否进行宫颈内埋缝合</td>
+                                <td>
+                                    <div><input type="range" name="m45" id="pointsRange45" min="0" max="10" step="0.1" onchange="updateValue('pointsRange45', this.value)">
+                                        <span id="rangeValue45">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="error">
+                                <td>
+                                    46
+                                </td>
+                                <td>
+                                    卡贝
+                                </td>
+                                <td>是否使用卡贝药物</td>
+                                <td>
+                                    <div> <input type="range" name="m46" id="pointsRange46" min="0" max="10" step="0.1" onchange="updateValue('pointsRange46', this.value)">
+                                        <span id="rangeValue46">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="warning">
+                                <td>
+                                    47
+                                </td>
+                                <td>
+                                    复方氯化钠
+                                </td>
+                                <td>是否使用复方氯化钠以补充体液</td>
+                                <td>
+                                    <div> <input type="range" name="m47" id="pointsRange47" min="0" max="10" step="0.1" onchange="updateValue('pointsRange47', this.value)">
+                                        <span id="rangeValue47">0.5</span></div>
+                                </td>
+                            </tr>
+                            <tr class="info">
+                                <td>
+                                    48
+                                </td>
+                                <td>
+                                    转归
+                                </td>
+                                <td>孕产妇或新生儿的转归病房</td>
+                                <td>
+                                    <div>
+                                        <input type="range" name="m48" id="pointsRange48" min="0" max="10" step="0.1" onchange="updateValue('pointsRange48', this.value)">
+                                        <span id="rangeValue48">0.5</span></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="text-center">
+            <button id="fat-btn" class="btn btn-primary" data-loading-text="Loading..." type="submit"> 提交结果</button>
+            <button id="fat-btn" class="btn btn-primary" data-loading-text="Loading..." type="reset">重置</button>
+        </div>
+    </form>
+    {{display_area}}
+
+    <script>
+        // 当滑块值变化时，更新显示的值
+        function updateValue(rangeId, value) {
+            document.getElementById('rangeValue' + rangeId.slice(-1)).innerText = (value / 10).toFixed(1); // 转换为0到1的范围并保留一位小数
+        }
+    </script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

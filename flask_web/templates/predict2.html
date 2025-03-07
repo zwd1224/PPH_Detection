@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>PREDICT2</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <!-- <style>
+        body {
+            background-image: url();
+        }
+    </style> -->
+
+
+
+</head>
+
+<body>
+
+    <!-- <img src="./img/wangye.jpg" class="img-responsive" alt="Cinque Terre" width="100" height="100"> -->
+    <h1 class="text-center">产后出血症预测系统</h1>
+    <h4 class="text-center">Postpartum Hemorrhage Prediction System</h4>
+
+    </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="home.html">主页 </a></li>
+                    <li class="active"><a href="predict.html">预测<span class="sr-only">(current)</span></a></li>
+                </ul>
+
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="jumbotron">
+                    <h1>
+                        如何预测？
+                    </h1>
+                    <p>
+                        用户输入各特征对应的数据值，或输入病人编号进行自动填充，然后点击预测，模型会计算出预测结果，并给予一定的解释。
+
+                    </p>
+                    <p>"The user inputs the corresponding data values ​​for each feature or enters the patient number for automatic completion. Then, by clicking 'predict,' the model will compute the prediction results and provide some explanation."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form class="form-inline" role="form" action="{{ url_for('predict2')}}" method="POST">
+        <div class="container">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">孕产妇信息</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row" style="padding: 10px 100px 19px 50px;">
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                孕周(周)：<input type="text" class="form-control" name="yz">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                年龄(岁)：<input type="text" class="form-control" name="age">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                孕次(次)：<input type="text" class="form-control" name="yc">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                产次(次)：<input type="text" class="form-control" name="cc">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                身高(厘米)：<input type="text" class="form-control" name="height">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                体重(千克)：<input type="text" class="form-control" name="weight">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                体重指数(千克/平方米)：<input type="text" class="form-control" name="tzzs">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                学历：<select name="xl">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="-1">未知</option>
+                                    <option value="1">小学</option>
+                                    <option value="2">初中</option>
+                                    <option value="3">高中(中专)</option>
+                                    <option value="4">大专</option>
+                                    <option value="5">本科</option>
+                                    <option value="6">研究生</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">分娩过程</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row" style="padding: 10px 100px 19px 50px;">
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                第一产程时间(min)：<input type="text" class="form-control" name="dyccsj">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                第二产程时间(min)：<input type="text" class="form-control" name="deccsj">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                第三产程时间(min)：<input type="text" class="form-control" name="dsccsj">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                总产程时间(min)：<input type="text" class="form-control" name="zccsj">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                阴道检查次数(次)：<input type="text" class="form-control" name="ydjccs">
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                临产方式：
+                                <select name="lcfs">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1"> 其他药物引产</option>
+                                    <option value="2">催产素引产 </option>
+                                    <option value="3"> 未临产</option>
+                                    <option value="4"> 自然临产</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎儿娩出方式：
+                                <select name="temcfs">
+                                            <option selected="selected" >请选择</option>
+                                            <option value="-1">未知</option>
+                                            <option value="1">吸引产</option>
+                                            <option value="2">顺产</option>
+                                            <option value="3">钳产</option>
+                                            <option value="4">剖宫产</option>
+                                            <option value="5">产钳助产</option>
+                                            <option value="6">臀助产</option>
+                                            <option value="7">臀牵引</option>
+                                        </select>
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘娩出方式：
+                                <select name="tpmcfs">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="-1">未知</option>
+                                    <option value="1">自然</option>
+                                    <option value="2">人工</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎膜破裂方式：
+                                <select name="tmplfs">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="-1">未知</option>
+                                    <option value="1">自然</option>
+                                    <option value="2">早期</option>
+                                    <option value="3">术中</option>
+                                    <option value="4">人工</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">产科指标</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row" style="padding: 10px 100px 19px 50px;">
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                前羊水量(毫升)：<input type="text" class="form-control" name="qysl">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                羊水量(毫升)：<input type="text" class="form-control" name="ysl">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘宽(厘米)：<input type="text" class="form-control" name="tpk">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘长(厘米)：<input type="text" class="form-control" name="tpc">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘厚(厘米)：<input type="text" class="form-control" name="tph">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘重量(克)：<input type="text" class="form-control" name="tpzl">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                脐带长(厘米)：<input type="text" class="form-control" name="qdc">
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘完整：
+                                <select name="tpwz">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">完整</option>
+                                    <option value="2">基本完整</option>
+                                    <option value="3">不完整</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎盘附着情况：
+                                <select name="tpfzqk">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="0">未知</option>
+                                    <option value="1">边缘</option>
+                                    <option value="2">中央</option>
+                                    <option value="3">胎膜</option>
+                                    <option value="4">其他</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胎膜完整：
+                                <select name="tmwz">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">完整</option>
+                                    <option value="2">不完整</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                脐带扭转：
+                                <select name="qdnz">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">扭转</option>
+                                    <option value="2">无</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                脐带情况：
+                                <select name="qdqk">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">有缠绕</option>
+                                    <option value="2">无缠绕</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                会阴：
+                                <select name="hy">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">完整</option>
+                                    <option value="2">侧切</option>
+                                    <option value="3">直切</option>
+                                    <option value="4">I度裂伤、裂伤</option>
+                                    <option value="5">裂伤+侧切</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                前羊水性质：
+                                <select name="qysxz">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="-1">空白（-） 未见 不详</option>
+                                    <option value="2">血性</option>
+                                    <option value="4">清</option>
+                                    <option value="5">浑浊</option>
+                                    <option value="7">III°</option>
+                                    <option value="8">II°</option>
+                                    <option value="9">I°</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                阴道壁裂伤：
+                                <select name="ydbls">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">有</option>
+                                    <option value="0">无</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                宫颈情况：
+                                <select name="gjqk">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">有裂伤</option>
+                                    <option value="0">无</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">胎儿信息</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row" style="padding: 10px 100px 19px 50px;">
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                头围(厘米)：<input type="text" class="form-control" name="tw">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                身长(厘米)：<input type="text" class="form-control" name="sc">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                胸围(厘米)：<input type="text" class="form-control" name="xw">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                出生时情况：<input type="text" class="form-control" name="cssqk">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                出生体重(克)：<input type="text" class="form-control" name="cstz">
+                            </div>
+
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                呼吸：
+                                <select name="hx">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="-1">无</option>
+                                    <option value="1">自然</option>
+                                    <option value="2">人工</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                新生儿性别：
+                                <select name="xsexb">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">男</option>
+                                    <option value="0">女</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">医疗干预</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="row" style="padding: 10px 100px 19px 50px;">
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                宫颈外缝针数(针)：<input type="text" class="form-control" name="gjwfzs">
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                欣母沛：
+                                <select name="xmp">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                缩宫素：
+                                <select name="sgs">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                益母草：
+                                <select name="ymc">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                宫颈内埋缝合：
+                                <select name="gjnmfh">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-bottom: 10px;"></div>
+
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                卡贝：
+                                <select name="kb">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                复方氯化钠：
+                                <select name="fflhn">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px; margin-right: 20px;">
+                                转归：
+                                <select name="gz">
+                                    <option selected="selected" >请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="text-center">
+            <button id="fat-btn" class="btn btn-primary" data-loading-text="Loading..." type="submit"> 开始预测</button>
+            <button id="fat-btn" class="btn btn-primary" data-loading-text="Loading..." type="reset">重置</button>
+
+        </div>
+
+    </form>
+    </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
